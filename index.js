@@ -7,21 +7,6 @@ function clickWooDong() {
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
 }
 
-// Function to save the value of timesClicked to a cookie
-function save() {
-    setCookie("timesClicked", timesClicked, 7); // Save timesClicked to a cookie with a 7-day expiry
-}
-
-// Function to retrieve the value of timesClicked from a cookie and update the timesClicked variable and paragraph
-function load() {
-    let retrievedValue = getCookie("timesClicked");
-    if (retrievedValue !== null) {
-        timesClicked = parseInt(retrievedValue);
-        document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
-    } else {
-        alert("Cookie not found or expired");
-    }
-}
 
 // Function to set a cookie
 function setCookie(name, value, daysToExpire) {
@@ -48,4 +33,20 @@ function getCookie(name) {
         }
     }
     return null;
+}
+
+// Function to save the value of timesClicked to a cookie
+function save() {
+    setCookie("timesClicked", timesClicked, 7); // Save timesClicked to a cookie with a 7-day expiry
+}
+
+// Function to retrieve the value of timesClicked from a cookie and update the timesClicked variable and paragraph
+function load() {
+    let retrievedValue = getCookie("timesClicked");
+    if (retrievedValue !== null) {
+        timesClicked = parseInt(retrievedValue);
+        document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+    } else {
+        alert("Cookie not found or expired");
+    }
 }
