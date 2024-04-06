@@ -50,3 +50,10 @@ function load() {
         alert("Cookie not found or expired");
     }
 }
+
+function wipeData(){
+    document.cookie = "timesClicked=; expires=Sat, 15 April 1989 00:00:00 UTC; path=/";
+    timesClicked=0;
+    document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+
+}
