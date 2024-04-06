@@ -57,3 +57,7 @@ function wipeData(){
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
 
 }
+
+document.getElementById("save").addEventListener("click", save);
+document.getElementById("load").addEventListener("click", load);
+document.getElementById("wipe").addEventListener("click", wipeData);
