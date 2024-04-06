@@ -21,7 +21,6 @@ function load() {
     } else {
         alert("Cookie not found or expired");
     }
-    console.log(getCookie("timesClicked"));
 }
 
 // Function to set a cookie
