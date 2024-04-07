@@ -1,9 +1,32 @@
-.loadSave button{
-    padding: 10px 10px;
-    font-size: 20px;
-    margin-right: 20px;
+.loadSave {
+    width: 50%; /* Adjust the width as per your design */
+    margin: 0 auto; /* This centers the div horizontally */
+    text-align: center; /* This centers the content inside the div */
+    font-size: 30px;
+    padding: 20px;
 }
-#timesClicked{
-    font-size:30px;
-    
+
+.loadSave button{
+    font-size: 20px;
+}
+
+#WooDongTransparent {
+    position: fixed;
+    bottom: 0%;
+    height: 400px;
+    animation: wooDongSlide 10s infinite linear;
+}
+
+#WooDongTransparentTwo {
+    position: fixed;
+    height: 400px;
+    animation: wooDongSlide 10s infinite linear;
+}
+
+@keyframes wooDongSlide {
+    0% { margin-left: 0%; }
+    25% { margin-bottom: 100px; }
+    50% { margin-left: 90%; margin-bottom: 0px; }
+    75% { margin-bottom: 100px; }
+    100% { margin-left: 0%; margin-bottom: 0px; transform: rotate(360deg); }
 }
