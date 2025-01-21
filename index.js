@@ -1,9 +1,9 @@
 let timesClicked = 0;
 
 function clickWooDong() {
-    timesClicked++;
+    timesClicked+=5;
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
-    console.log("click");
+    console.log("click lmao");
 }
 
 function purchaseUpgrade(){
