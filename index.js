@@ -1,63 +1,38 @@
-// Initial value for timesClicked
 let timesClicked = 0;
 
-// Function to update the timesClicked text
 function clickWooDong() {
     timesClicked++;
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+    console.log("click");
+}
+
+function purchaseUpgrade(){
+    console.log("working");
 }
 
 
-// Function to set a cookie
-function setCookie(name, value, daysToExpire) {
-    let expires = "";
-    if (daysToExpire) {
-        const date = new Date();
-        date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-// Function to get a cookie value
-function getCookie(name) {
-    let nameEQ = name + "=";
-    let cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        while (cookie.charAt(0) == ' ') {
-            cookie = cookie.substring(1, cookie.length);
-        }
-        if (cookie.indexOf(nameEQ) == 0) {
-            return cookie.substring(nameEQ.length, cookie.length);
-        }
-    }
-    return null;
-}
-
-// Function to save the value of timesClicked to a cookie
 function save() {
-    setCookie("timesClicked", timesClicked, 7); // Save timesClicked to a cookie with a 7-day expiry
+    localStorage.setItem("timesClicked", timesClicked); 
 }
 
-// Function to retrieve the value of timesClicked from a cookie and update the timesClicked variable and paragraph
 function load() {
-    let retrievedValue = getCookie("timesClicked");
+    let retrievedValue = localStorage.getItem("timesClicked");
     if (retrievedValue !== null) {
-        timesClicked = parseInt(retrievedValue);
+        timesClicked = parseInt(retrievedValue, 10);
         document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
     } else {
-        alert("Cookie not found or expired");
+        alert("No data found in local storage");
     }
 }
 
-function wipeData(){
-    document.cookie = "timesClicked=; expires=Sat, 15 April 1989 00:00:00 UTC; path=/";
-    timesClicked=0;
+function wipeData() {
+    localStorage.removeItem("timesClicked"); 
+    timesClicked = 0;
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
-
 }
+
 
 document.getElementById("save").addEventListener("click", save);
 document.getElementById("load").addEventListener("click", load);
 document.getElementById("wipe").addEventListener("click", wipeData);
+document.getElementById("upgrade1").addEventListener("click", purchaseUpgrade)
