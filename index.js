@@ -1,7 +1,7 @@
 let timesClicked = 0;
 
 function clickWooDong() {
-    timesClicked+=5;
+    timesClicked++;
     document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
     console.log("click lmao");
 }
@@ -13,7 +13,7 @@ function purchaseUpgrade(){
 
 function save() {
     localStorage.setItem("timesClicked", timesClicked); 
-}
+}   
 
 function load() {
     let retrievedValue = localStorage.getItem("timesClicked");
