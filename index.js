@@ -124,6 +124,7 @@ function calculateOfflineEarnings(closeDate,cps){
 
 function onClose(event) {
     state.closeDate = new Date();
+    save();
 }
 
 
