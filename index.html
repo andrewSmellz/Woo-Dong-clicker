@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>get clicking....</title>
     <link rel="stylesheet" href="style.css">    
-    <base href="https://andrewsmellz.github.io/Woo-Dong-clicker/">
 
 </head>
 <body>
     
     <div class="loadSave">
-        <h1>Woo-Dong!!!!!!!!</h1>
 
         <button id="save">
             save
@@ -25,8 +23,9 @@
             wipe data
         </button>
 
-        <br>
     
+
+    <p id="cpsCounter">current cps is <span id="cpsCount"></span></p>
 
     <button id="wooDongClicker" onclick="clickWooDong()"> 
         <img src="images\woo-dong sit up.webp" alt = "woo-dong!!!!!" title="click me :3">
@@ -43,13 +42,16 @@
 
 
     
-    <button id="upgrade1"> 
-        first upgrade
+    <button id="upgrade1" title="each upgrade1 clicks one time per second"> 
+        first upgrade costs 10 <br>
     </button>
-    <button id="upgrade2"> 
-        second upgrade
+    <button id="upgrade2" title="each upgrade2 clicks ten times per second"> 
+        second upgrade costs 100 <br>
     </button>
-    
+    <button id="upgrade3" title="each upgrade3 clicks hundred times per second"> 
+        second upgrade costs 1000 <br>
+    </button>
+
     <script src="index.js"></script>   
 </body>
 </html>
