@@ -1,83 +1,112 @@
-let timesClicked = 0;
-let cps = 0;
 const numOfUpgrades=3;
-const upgradesArr = new Array(numOfUpgrades).fill(0);
 let autoClickerInterval;
 const cpsCount = document.getElementById("cpsCount");
-cpsCount.textContent=cps;
+const clickCount = document.getElementById("timesClicked");
+const upgrade1 = document.getElementById("upgrade1");
+const upgrade2 = document.getElementById("upgrade2");
+const upgrade3 = document.getElementById("upgrade3");
+
+const state = {
+    timesClicked: 0,
+    cps: 0,
+    upgradesArr: new Array(numOfUpgrades).fill(0)
+};
+    
+
+cpsCount.textContent = state.cps;
+
+
+autoClickerInterval = setInterval(autoClickerWooDong,1000);
+
 
 function clickWooDong() {
-    timesClicked++;
-    document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+    state.timesClicked++;
+    clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
     console.log("click lmao owned");
 }
 
 function autoClickerWooDong(){
-    cps=(upgradesArr[0]+10*upgradesArr[1]+100*upgradesArr[2])
-    cpsCount.textContent=cps;
-    timesClicked+=cps;
-    document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
-    console.log("click lmao owned");
+    state.cps=(state.upgradesArr[0]+10*state.upgradesArr[1]+100*state.upgradesArr[2])
+    cpsCount.textContent=state.cps;
+    state.timesClicked+=state.cps;
+    clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
+    console.log("click auto lmao owned");
 }
 
 function purchaseUpgradeOne(){
-    let cost = Math.floor(15 * (1.69**upgradesArr[0]));
-    if(timesClicked<cost){
+    let cost = Math.floor(10 * (1.69**state.upgradesArr[0]));
+    if(state.timesClicked<cost){
         return;
     }
-    timesClicked-=cost;
+    console.log("clicked upgrade 1 purchase");
+    state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
-    upgradesArr[0]++;
-    cost = Math.floor(15 * (1.69**upgradesArr[0]));
-    document.getElementById("upgrade1").innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${upgradesArr[0]}`;
-     autoClickerInterval = setInterval(autoClickerWooDong,1000)
+    state.upgradesArr[0]++;
+    cost = Math.floor(10 * (1.69**state.upgradesArr[0]));
+    upgrade1.innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[0]}`;
+     autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
 function purchaseUpgradeTwo(){
-    let cost = Math.floor(100 * (1.69**upgradesArr[1]));
-    if(timesClicked<cost){
+    let cost = Math.floor(100 * (1.69**state.upgradesArr[1]));
+    if(state.timesClicked<cost){
         return;
     }
-    timesClicked-=cost;
+    state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
-    upgradesArr[1]++;
-    cost = Math.floor(100 * (1.69**upgradesArr[1]));
-    document.getElementById("upgrade2").innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${upgradesArr[1]}`;
-     autoClickerInterval = setInterval(autoClickerWooDong,1000)
+    state.upgradesArr[1]++;
+    cost = Math.floor(100 * (1.69**state.upgradesArr[1]));
+    upgrade2.innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[1]}`;
+     autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
 function purchaseUpgradeThree(){
-    let cost = Math.floor(1000 * (1.69**upgradesArr[2]));
-    if(timesClicked<cost){
+    let cost = Math.floor(1000 * (1.69**state.upgradesArr[2]));
+    if(state.timesClicked<cost){
         return;
     }
-    timesClicked-=cost;
+    state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
-    upgradesArr[2]++;
-    cost = Math.floor(1000 * (1.69**upgradesArr[2]));
-    document.getElementById("upgrade3").innerHTML = `third upgrade costs ${cost} <br> amount purchased: ${upgradesArr[2]}`;
-     autoClickerInterval = setInterval(autoClickerWooDong,1000)
+    state.upgradesArr[2]++;
+    cost = Math.floor(1000 * (1.69**state.upgradesArr[2]));
+    upgrade3.innerHTML = `third upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[2]}`;
+     autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
 
 function save() {
-    localStorage.setItem("timesClicked", timesClicked); 
+    localStorage.setItem("userData", JSON.stringify(state));  
 }   
 
 function load() {
-    let retrievedValue = localStorage.getItem("timesClicked");
-    if (retrievedValue !== null) {
-        timesClicked = parseInt(retrievedValue, 10);
-        document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+    let retrievedState = localStorage.getItem("userData");
+    if (retrievedState !== null){
+        console.log("save loaded");
+        const parsedState = JSON.parse(retrievedState);
+        state.timesClicked = parsedState.timesClicked;
+        state.cps = parsedState.cps;
+        state.upgradesArr = parsedState.upgradesArr;
+
+        clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
+        cpsCount.textContent=state.cps;
+        upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (1.69 ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
+        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (1.69 ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
+        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (1.69 ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
     } else {
         alert("No data found in local storage");
     }
 }
 
 function wipeData() {
-    localStorage.removeItem("timesClicked"); 
-    timesClicked = 0;
-    document.getElementById("timesClicked").innerHTML = `You have clicked Woo-Dong ${timesClicked} times`;
+    localStorage.removeItem("userData"); 
+    state.timesClicked = 0;
+    state.cps = 0;
+    state.upgradesArr.fill(0);
+    clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
+    cpsCount.textContent=state.cps;
+    upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (1.69 ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
+        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (1.69 ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
+        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (1.69 ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
 }
 
 
