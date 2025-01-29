@@ -1,4 +1,5 @@
 const numOfUpgrades=3;
+const costBase = 1.15;
 let autoClickerInterval;
 const cpsCount = document.getElementById("cpsCount");
 const clickCount = document.getElementById("timesClicked");
@@ -9,10 +10,10 @@ const upgrade3 = document.getElementById("upgrade3");
 const state = {
     timesClicked: 0,
     cps: 0,
-    upgradesArr: new Array(numOfUpgrades).fill(0)
+    upgradesArr: new Array(numOfUpgrades).fill(0),
+    closeDate: new Date()
 };
     
-
 cpsCount.textContent = state.cps;
 
 
@@ -34,7 +35,7 @@ function autoClickerWooDong(){
 }
 
 function purchaseUpgradeOne(){
-    let cost = Math.floor(10 * (1.69**state.upgradesArr[0]));
+    let cost = Math.floor(10 * (costBase**state.upgradesArr[0]));
     if(state.timesClicked<cost){
         return;
     }
@@ -42,33 +43,33 @@ function purchaseUpgradeOne(){
     state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
     state.upgradesArr[0]++;
-    cost = Math.floor(10 * (1.69**state.upgradesArr[0]));
+    cost = Math.floor(10 * (costBase**state.upgradesArr[0]));
     upgrade1.innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[0]}`;
      autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
 function purchaseUpgradeTwo(){
-    let cost = Math.floor(100 * (1.69**state.upgradesArr[1]));
+    let cost = Math.floor(100 * (costBase**state.upgradesArr[1]));
     if(state.timesClicked<cost){
         return;
     }
     state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
     state.upgradesArr[1]++;
-    cost = Math.floor(100 * (1.69**state.upgradesArr[1]));
+    cost = Math.floor(100 * (costBase**state.upgradesArr[1]));
     upgrade2.innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[1]}`;
      autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
 function purchaseUpgradeThree(){
-    let cost = Math.floor(1000 * (1.69**state.upgradesArr[2]));
+    let cost = Math.floor(1000 * (costBase**state.upgradesArr[2]));
     if(state.timesClicked<cost){
         return;
     }
     state.timesClicked-=cost;
     clearInterval(autoClickerInterval);
     state.upgradesArr[2]++;
-    cost = Math.floor(1000 * (1.69**state.upgradesArr[2]));
+    cost = Math.floor(1000 * (costBase**state.upgradesArr[2]));
     upgrade3.innerHTML = `third upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[2]}`;
      autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
@@ -86,12 +87,14 @@ function load() {
         state.timesClicked = parsedState.timesClicked;
         state.cps = parsedState.cps;
         state.upgradesArr = parsedState.upgradesArr;
-
+        parsedState.closeDate = new Date(parsedState.closeDate);
+        state.closeDate = parsedState.closeDate;
+        state.timesClicked+=calculateOfflineEarnings(state.closeDate,state.cps);
         clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
         cpsCount.textContent=state.cps;
-        upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (1.69 ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
-        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (1.69 ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
-        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (1.69 ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
+        upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (costBase ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
+        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (costBase ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
+        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (costBase ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
     } else {
         alert("No data found in local storage");
     }
@@ -104,10 +107,26 @@ function wipeData() {
     state.upgradesArr.fill(0);
     clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
     cpsCount.textContent=state.cps;
-    upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (1.69 ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
-        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (1.69 ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
-        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (1.69 ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
+    upgrade1.innerHTML = `First upgrade costs ${Math.floor(10 * (costBase ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
+        upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (costBase ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
+        upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (costBase ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
 }
+
+
+function calculateOfflineEarnings(closeDate,cps){
+    openDate = new Date();
+    console.log(`close date ${closeDate}`);
+    console.log(`open date ${openDate}`);
+    console.log(`difference ${((openDate.getTime()-closeDate.getTime())/1000)}`);
+    return Math.floor(((openDate.getTime()-closeDate.getTime())/1000)*cps);
+}
+
+
+function onClose(event) {
+    state.closeDate = new Date();
+}
+
+
 
 
 document.getElementById("save").addEventListener("click", save);
@@ -116,3 +135,6 @@ document.getElementById("wipe").addEventListener("click", wipeData);
 document.getElementById("upgrade1").addEventListener("click", purchaseUpgradeOne)
 document.getElementById("upgrade2").addEventListener("click", purchaseUpgradeTwo);
 document.getElementById("upgrade3").addEventListener("click", purchaseUpgradeThree);
+
+
+window.addEventListener("beforeunload", onClose); 
