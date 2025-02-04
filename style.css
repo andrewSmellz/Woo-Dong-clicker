@@ -1,4 +1,4 @@
-.loadSave {
+ .loadSave {
     width: 50%; /* Adjust the width as per your design */
     margin: 0 auto; /* This centers the div horizontally */
     text-align: center; /* This centers the content inside the div */
@@ -36,5 +36,53 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  } 
+
+
+
+.grid input{
+    width: 2rem;
+    height: 2rem;   
+}
+
+.grid table {
+    display: flex;
+    justify-content: center;
+}
+
+.grid td {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+}
+
+.cell {
+    outline: none;
+    border: none;
+}
+
+/* Add a thicker border for the 3x3 subgrids */
+.grid tr:nth-child(3n) td {
+  border-bottom: 3px solid black;
+}
+.grid tr:nth-child(3n-2) td {
+    border-top: 3px solid black;
   }
-  
+.grid td:nth-child(3n) {
+  border-right: 3px solid black;
+}
+.grid td:nth-child(3n-2) {
+    border-left: 3px solid black;
+  }
+
+.menu{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+.menu button{
+    font-size: 1.2rem;
+    padding: 10px 20px;
+}
+    
+
