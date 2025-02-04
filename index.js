@@ -57,7 +57,7 @@ function purchaseUpgradeTwo(){
     clearInterval(autoClickerInterval);
     state.upgradesArr[1]++;
     cost = Math.floor(100 * (costBase**state.upgradesArr[1]));
-    upgrade2.innerHTML = `first upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[1]}`;
+    upgrade2.innerHTML = `second upgrade costs ${cost} <br> amount purchased: ${state.upgradesArr[1]}`;
      autoClickerInterval = setInterval(autoClickerWooDong,1000);
 }
 
