@@ -41,8 +41,8 @@
 
 
 .grid input{
-    width: 2rem;
-    height: 2rem;   
+    width: 5rem;
+    height: 5rem;   
 }
 
 .grid table {
@@ -59,6 +59,8 @@
 .cell {
     outline: none;
     border: none;
+    text-align: center;
+    font-size: 3rem;
 }
 
 /* Add a thicker border for the 3x3 subgrids */
@@ -81,8 +83,10 @@
     justify-content: center;
 }
 .menu button{
-    font-size: 1.2rem;
-    padding: 10px 20px;
+    width: 15rem;
+    height: 7.5rem;
+    font-size: 1.25rem;
+    padding: 5px 2px;
 }
     
 
