@@ -41,8 +41,8 @@
 
 
 .grid input{
-    width: 5rem;
-    height: 5rem;   
+    width: 3rem;
+    height: 3rem;   
 }
 
 .grid table {
@@ -83,8 +83,8 @@
     justify-content: center;
 }
 .menu button{
-    width: 15rem;
-    height: 7.5rem;
+    width: 10rem;
+    height: 5rem;
     font-size: 1.25rem;
     padding: 5px 2px;
 }
