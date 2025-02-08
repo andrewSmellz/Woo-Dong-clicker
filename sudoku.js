@@ -3,14 +3,17 @@ const newGameBTN = document.getElementById("newGameBTN");
 
 const rows = 9;
 const cols = 9;
+let cellsToRemove = 40;
 const grid = [];
 
 for (let i = 0; i < rows; i++) {
   grid[i] = [];
   for (let j = 0; j < cols; j++) {
-    grid[i][j] = 0;
+    grid[i][j] = null;
   }
 }
+
+let puzzle = [];
 
 function getGrid() {
   for (let i = 0; i < 9; i++) {
@@ -35,11 +38,15 @@ function newGame() {
 
 function generateBoard() {
   for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) grid[i][j] = 0;
+    for (let j = 0; j < cols; j++){ 
+      grid[i][j] = 0;}
   }
   dfs(0, 0);
   printGrid();
-  fillGrid();
+
+  puzzle = Array.from(grid);
+  createPuzzle(puzzle, cellsToRemove);
+  fillGrid(puzzle);
 }
 
 function dfs(row, column) {
@@ -59,11 +66,11 @@ function dfs(row, column) {
   return false;
 }
 
-function fillGrid() {
+function fillGrid(matrix) {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       let index = i * 9 + j;
-      cells[index].value = grid[i][j];
+      cells[index].value = matrix[i][j];
     }
   }
 }
@@ -93,6 +100,27 @@ function shuffle(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+}
+
+function createPuzzle(puzzle, removeCount) {
+  for (let i = 0; i < removeCount / 2; i++) {
+    let randRow;
+    let randCol;
+    do {
+      randRow = Math.floor(Math.random() * 9);
+      randCol = Math.floor(Math.random() * 9);
+    } while (
+      puzzle[randRow][randCol] === null &&
+      puzzle[randCol][randRow] === null
+    );
+    puzzle[randRow][randCol] = null;
+    puzzle[randCol][randRow] = null;
+    solvePuzzle(puzzle);
+  }
+}
+
+function solvePuzzle(puzzle,row,col) {
+
 }
 
 cells.forEach((cell) => {

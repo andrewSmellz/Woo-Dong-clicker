@@ -92,7 +92,7 @@ function load() {
         state.timesClicked+=calculateOfflineEarnings(state.closeDate,state.cps);
         clickCount.innerHTML = `You have clicked Woo-Dong ${state.timesClicked} times`;
         cpsCount.textContent=state.cps;
-        upgrade1.innerHTML = `First upgrade costs ${Math.floor(15 * (costBase ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
+        upgrade1.innerHTML = `First upgrade costs ${Math.floor(10 * (costBase ** state.upgradesArr[0]))} <br> Amount purchased: ${state.upgradesArr[0]}`;
         upgrade2.innerHTML = `Second upgrade costs ${Math.floor(100 * (costBase ** state.upgradesArr[1]))} <br> Amount purchased: ${state.upgradesArr[1]}`;
         upgrade3.innerHTML = `Third upgrade costs ${Math.floor(1000 * (costBase ** state.upgradesArr[2]))} <br> Amount purchased: ${state.upgradesArr[2]}`;
     } else {
