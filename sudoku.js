@@ -34,22 +34,29 @@ function newGame() {
 }
 
 function generateBoard() {
-  for (let boxRow = 0; boxRow < 3; boxRow++) {
-    for (let boxCol = 0; boxCol < 3; boxCol++) {
-      const numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-      let index = 0;
-      for (let row = 0; row < 3; row++) {
-        for (let col = 0; col < 3; col++) {
-          const trueRow = boxRow * 3 + row;
-          const trueCol = boxCol * 3 + col;
-          grid[trueRow][trueCol] = numbers[index];
-          index++;
-        }
-      }
-    }
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) grid[i][j] = 0;
   }
+  dfs(0, 0);
   printGrid();
   fillGrid();
+}
+
+function dfs(row, column) {
+  if (row === 9) return true;
+  if (column === 9) return dfs(row + 1, 0);
+
+  let numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  for (let num of numbers) {
+    if (checkValid(row, column, num)) {
+      grid[row][column] = num;
+      if (dfs(row, column + 1)) return true;
+      grid[row][column] = 0;
+    }
+  }
+
+  return false;
 }
 
 function fillGrid() {
@@ -59,6 +66,24 @@ function fillGrid() {
       cells[index].value = grid[i][j];
     }
   }
+}
+
+function checkValid(row, column, number) {
+  for (let i = 0; i < 9; i++) {
+    if (grid[row][i] == number || grid[i][column] == number) {
+      return false;
+    }
+  }
+  let boxRow = Math.floor(row / 3) * 3;
+  let boxCol = Math.floor(column / 3) * 3;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (grid[boxRow + i][boxCol + j] == number) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 //this is called a Fisher-Yates Shuffle :)
