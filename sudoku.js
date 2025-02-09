@@ -38,13 +38,14 @@ function newGame() {
 
 function generateBoard() {
   for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++){ 
-      grid[i][j] = 0;}
+    for (let j = 0; j < cols; j++) {
+      grid[i][j] = 0;
+    }
   }
   dfs(0, 0);
   printGrid();
 
-  puzzle = Array.from(grid);
+  puzzle = JSON.parse(JSON.stringify(grid));
   createPuzzle(puzzle, cellsToRemove);
   fillGrid(puzzle);
 }
@@ -111,17 +112,15 @@ function createPuzzle(puzzle, removeCount) {
       randCol = Math.floor(Math.random() * 9);
     } while (
       puzzle[randRow][randCol] === null &&
-      puzzle[randCol][randRow] === null
+      puzzle[8-randRow][8-randCol] === null
     );
     puzzle[randRow][randCol] = null;
-    puzzle[randCol][randRow] = null;
+    puzzle[8-randRow][8-randCol] = null;
     solvePuzzle(puzzle);
   }
 }
 
-function solvePuzzle(puzzle,row,col) {
-
-}
+function solvePuzzle(puzzle, row, col) {}
 
 cells.forEach((cell) => {
   cell.addEventListener("input", getGrid);
