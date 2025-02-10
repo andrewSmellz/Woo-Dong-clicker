@@ -1,28 +1,43 @@
 const cells = document.querySelectorAll(".cell");
 const newGameBTN = document.getElementById("newGameBTN");
+const easyBtn = document.getElementById("easyDif");
+const mediumBtn = document.getElementById("medDif");
+const hardBtn = document.getElementById("hardDif");
 
 const rows = 9;
 const cols = 9;
 let cellsToRemove = 40;
 const grid = [];
+let puzzle = [];
+let solution = [];
+let solutionCount = 0;
 
 for (let i = 0; i < rows; i++) {
   grid[i] = [];
   for (let j = 0; j < cols; j++) {
-    grid[i][j] = null;
+    grid[i][j] = 0;
   }
 }
-
-let puzzle = [];
 
 function getGrid() {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       let index = i * 9 + j;
-      grid[i][j] = cells[index].value;
+      grid[i][j] = Number(cells[index].value) || 0;
     }
   }
-  printGrid();
+  checkWin();
+}
+
+function checkWin() {
+  if (JSON.stringify(grid) === JSON.stringify(solution)) {
+    alert("you win woohoo");
+    cells.forEach((cell) => {
+      cell.disabled = true;
+    });
+  }else{
+    console.log("not correct yet");
+  }
 }
 
 function printGrid() {
@@ -33,6 +48,9 @@ function printGrid() {
 }
 
 function newGame() {
+  cells.forEach((cell) => {
+    cell.disabled = false;
+  });
   generateBoard();
 }
 
@@ -44,7 +62,7 @@ function generateBoard() {
   }
   dfs(0, 0);
   printGrid();
-
+  solution = JSON.parse(JSON.stringify(grid));
   puzzle = JSON.parse(JSON.stringify(grid));
   createPuzzle(puzzle, cellsToRemove);
   fillGrid(puzzle);
@@ -57,7 +75,7 @@ function dfs(row, column) {
   let numbers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
   for (let num of numbers) {
-    if (checkValid(row, column, num)) {
+    if (checkValid(grid, row, column, num)) {
       grid[row][column] = num;
       if (dfs(row, column + 1)) return true;
       grid[row][column] = 0;
@@ -71,12 +89,17 @@ function fillGrid(matrix) {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       let index = i * 9 + j;
-      cells[index].value = matrix[i][j];
+      if (matrix[i][j] !== 0) {
+        cells[index].value = matrix[i][j];
+        cells[index].disabled = true;
+      } else {
+        cells[index].value = null;
+      }
     }
   }
 }
 
-function checkValid(row, column, number) {
+function checkValid(grid, row, column, number) {
   for (let i = 0; i < 9; i++) {
     if (grid[row][i] == number || grid[i][column] == number) {
       return false;
@@ -94,7 +117,6 @@ function checkValid(row, column, number) {
   return true;
 }
 
-//this is called a Fisher-Yates Shuffle :)
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -110,20 +132,71 @@ function createPuzzle(puzzle, removeCount) {
     do {
       randRow = Math.floor(Math.random() * 9);
       randCol = Math.floor(Math.random() * 9);
-    } while (
-      puzzle[randRow][randCol] === null &&
-      puzzle[8-randRow][8-randCol] === null
-    );
-    puzzle[randRow][randCol] = null;
-    puzzle[8-randRow][8-randCol] = null;
-    solvePuzzle(puzzle);
+    } while (puzzle[randRow][randCol] === 0);
+
+    let temp1 = puzzle[randRow][randCol];
+    let temp2 = puzzle[8 - randRow][8 - randCol];
+
+    puzzle[randRow][randCol] = 0;
+    puzzle[8 - randRow][8 - randCol] = 0;
+
+    if (!solvePuzzle(puzzle)) {
+      puzzle[randRow][randCol] = temp1;
+      puzzle[8 - randRow][8 - randCol] = temp2;
+      i--;
+    }
   }
 }
 
-function solvePuzzle(puzzle, row, col) {}
+function solvePuzzle(puzzle) {
+  let testPuzzle = JSON.parse(JSON.stringify(puzzle));
+  solutionCount = 0;
+  countSolutions(testPuzzle, 0, 0);
+  return solutionCount === 1;
+}
 
+function countSolutions(testPuzzle, row, column) {
+  if (row === 9) {
+    solutionCount++;
+    return;
+  }
+  if (column === 9) return countSolutions(testPuzzle, row + 1, 0);
+  if (testPuzzle[row][column] !== 0)
+    return countSolutions(testPuzzle, row, column + 1);
+
+  for (let num = 1; num <= 9; num++) {
+    if (checkValid(testPuzzle, row, column, num)) {
+      testPuzzle[row][column] = num;
+      countSolutions(testPuzzle, row, column + 1);
+      if (solutionCount > 1) return;
+      testPuzzle[row][column] = 0;
+    }
+  }
+}
+
+
+function setDifficulty(level) {
+  switch(level) {
+    case "easy":
+      cellsToRemove = 20;
+      break;
+    case "medium":
+      cellsToRemove = 40;
+      break;
+    case "hard":
+      cellsToRemove = 50;
+      break;
+  }
+  console.log(`difficulty is now ${level}`)
+}
+
+
+
+newGameBTN.addEventListener("click", newGame);
+easyBtn.addEventListener("click", () => setDifficulty("easy"));
+mediumBtn.addEventListener("click", () => setDifficulty("medium"));
+hardBtn.addEventListener("click", () => setDifficulty("hard"));
 cells.forEach((cell) => {
   cell.addEventListener("input", getGrid);
 });
 
-newGameBTN.addEventListener("click", newGame);
