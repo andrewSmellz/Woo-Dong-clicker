@@ -1,5 +1,4 @@
 const cells = document.querySelectorAll(".cell");
-const newGameBTN = document.getElementById("newGameBTN");
 const easyBtn = document.getElementById("easyDif");
 const mediumBtn = document.getElementById("medDif");
 const hardBtn = document.getElementById("hardDif");
@@ -30,14 +29,18 @@ function getGrid() {
 }
 
 function checkWin() {
-  if (JSON.stringify(grid) === JSON.stringify(solution)) {
-    alert("you win woohoo");
-    cells.forEach((cell) => {
-      cell.disabled = true;
-    });
-  }else{
-    console.log("not correct yet");
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (grid[i][j] !== solution[i][j]) {
+        console.log("not correct yet");
+        return;
+      }
+    }
   }
+  alert("you win woohoo");
+  cells.forEach((cell) => {
+    cell.disabled = true;
+  });
 }
 
 function printGrid() {
@@ -93,7 +96,7 @@ function fillGrid(matrix) {
         cells[index].value = matrix[i][j];
         cells[index].disabled = true;
       } else {
-        cells[index].value = null;
+        cells[index].value = "";
       }
     }
   }
@@ -174,9 +177,8 @@ function countSolutions(testPuzzle, row, column) {
   }
 }
 
-
 function setDifficulty(level) {
-  switch(level) {
+  switch (level) {
     case "easy":
       cellsToRemove = 20;
       break;
@@ -187,16 +189,15 @@ function setDifficulty(level) {
       cellsToRemove = 50;
       break;
   }
-  console.log(`difficulty is now ${level}`)
+  console.log(`difficulty is now ${level}`);
 }
 
-
-
-newGameBTN.addEventListener("click", newGame);
 easyBtn.addEventListener("click", () => setDifficulty("easy"));
 mediumBtn.addEventListener("click", () => setDifficulty("medium"));
 hardBtn.addEventListener("click", () => setDifficulty("hard"));
+easyBtn.addEventListener("click", () => newGame());
+mediumBtn.addEventListener("click", () => newGame());
+hardBtn.addEventListener("click", () => newGame());
 cells.forEach((cell) => {
   cell.addEventListener("input", getGrid);
 });
-
